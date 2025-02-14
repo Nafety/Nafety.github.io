@@ -4,90 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jeu des verbes irréguliers</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        .container { max-width: 500px; margin: auto; }
-        input { display: block; margin: 10px auto; padding: 8px; }
-        button { padding: 10px; cursor: pointer; }
-        .mode-selector { margin-bottom: 20px; }
-    </style>
+    <link rel="stylesheet" href="public/css/styles.css">
 </head>
 <body>
     <div class="container">
         <h1>Jeu des verbes irréguliers</h1>
-        <div class="mode-selector">
-            <button onclick="setMode(1)">Mode 1: Infinitif → Prétérit, Participe Passé, Traduction</button>
-            <button onclick="setMode(2)">Mode 2: Mot au hasard</button>
+        <div id="login-section">
+            <input type="text" id="username" placeholder="Entrez votre nom">
+            <button onclick="login()">Connexion</button>
         </div>
-        <label id="question-label"></label>
-        <input type="text" id="answer1" placeholder="Prétérit">
-        <input type="text" id="answer2" placeholder="Participe passé">
-        <input type="text" id="answer3" placeholder="Traduction">
-        <button onclick="checkAnswers()">Valider</button>
-        <p id="result"></p>
-        <button onclick="newWord()">Nouvelle question</button>
+        <div id="game-section" style="display: none;">
+            <div class="mode-selector">
+                <button onclick="setMode(1)">Mode 1: Infinitif → Prétérit, Participe Passé, Traduction</button>
+                <button onclick="setMode(2)">Mode 2: Mot au hasard</button>
+            </div>
+            <label id="question-label"></label>
+            <div id="answer-fields">
+                <input type="text" id="answer1" placeholder="Prétérit">
+                <input type="text" id="answer2" placeholder="Participe passé">
+                <input type="text" id="answer3" placeholder="Traduction">
+            </div>
+            <button onclick="checkAnswers()">Valider</button>
+            <p id="result"></p>
+            <p id="score">Score: 0</p>
+            <div id="leaderboard">
+                <h2>Classement</h2>
+                <ul id="leaderboard-list"></ul>
+            </div>
+        </div>
     </div>
-
-    <script>
-        const verbs = [
-            { inf: "go", pret: "went", part: "gone", trad: "aller" },
-            { inf: "see", pret: "saw", part: "seen", trad: "voir" },
-            { inf: "take", pret: "took", part: "taken", trad: "prendre" }
-            // Ajoutez d'autres verbes irréguliers ici
-        ];
-
-        let currentVerb;
-        let mode = "infinitif";
-        let gameMode = 1; // 1 pour Mode 1, 2 pour Mode 2
-
-        function setMode(newMode) {
-            gameMode = newMode;
-            newWord();
-        }
-
-        function newWord() {
-            currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
-            if (gameMode === 1) {
-                mode = "inf";
-                document.getElementById("question-label").textContent = `Infinitif : ${currentVerb.inf}`;
-            } else if (gameMode === 2) {
-                mode = ["inf", "pret", "part", "trad"][Math.floor(Math.random() * 4)];
-                let questionText = mode === "inf" ? currentVerb.inf :
-                                  mode === "pret" ? currentVerb.pret :
-                                  mode === "part" ? currentVerb.part :
-                                  currentVerb.trad;
-                document.getElementById("question-label").textContent = `Mot donné : ${questionText}`;
-            }
-            document.getElementById("answer1").value = "";
-            document.getElementById("answer2").value = "";
-            document.getElementById("answer3").value = "";
-            document.getElementById("result").textContent = "";
-        }
-
-        function checkAnswers() {
-            let ans1 = document.getElementById("answer1").value.trim().toLowerCase();
-            let ans2 = document.getElementById("answer2").value.trim().toLowerCase();
-            let ans3 = document.getElementById("answer3").value.trim().toLowerCase();
-            let correct1, correct2, correct3;
-
-            if (gameMode === 1) {
-                correct1 = currentVerb.pret;
-                correct2 = currentVerb.part;
-                correct3 = currentVerb.trad;
-            } else if (gameMode === 2) {
-                correct1 = mode !== "pret" ? currentVerb.pret : currentVerb.inf;
-                correct2 = mode !== "part" ? currentVerb.part : currentVerb.inf;
-                correct3 = mode !== "trad" ? currentVerb.trad : currentVerb.inf;
-            }
-
-            if (ans1 === correct1 && ans2 === correct2 && ans3 === correct3) {
-                document.getElementById("result").textContent = "Bravo ! Réponse correcte.";
-            } else {
-                document.getElementById("result").textContent = `Incorrect. Réponses : ${correct1}, ${correct2}, ${correct3}`;
-            }
-        }
-
-        newWord();
-    </script>
+    <script src="public/js/script.js"></script>
 </body>
 </html>
