@@ -297,17 +297,26 @@ document.getElementById("answer1").addEventListener("keypress", function(event) 
     if (event.key === "Enter") {
         event.preventDefault(); // Empêche le comportement par défaut (ex: saut de ligne dans un textarea)
         checkAnswers(); // Fonction de validation de la réponse
+        if (document.getElementById("answer1").classList.contains("correct")) {
+            document.getElementById("answer2").focus();
+        }
     }
 });
 document.getElementById("answer2").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault(); // Empêche le comportement par défaut (ex: saut de ligne dans un textarea)
         checkAnswers(); // Fonction de validation de la réponse
+        if (document.getElementById("answer2").classList.contains("correct")) {
+            document.getElementById("answer3").focus();
+        }
     }
 });
 document.getElementById("answer3").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault(); // Empêche le comportement par défaut (ex: saut de ligne dans un textarea)
         checkAnswers(); // Fonction de validation de la réponse
+        if ((document.getElementById("answer3").classList.contains("correct")) && (document.getElementById("answer3").classList.contains("correct")) && (document.getElementById("answer3").classList.contains("correct"))) {
+            document.getElementById("answer1").focus();
+        }
     }
 });
