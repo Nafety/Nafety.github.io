@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu des verbes irréguliers</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { max-width: 500px; margin: auto; }
+        input { display: block; margin: 10px auto; padding: 8px; }
+        button { padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Jeu des verbes irréguliers</h1>
+        <label id="question-label"></label>
+        <input type="text" id="answer1" placeholder="Prétérit">
+        <input type="text" id="answer2" placeholder="Participe passé">
+        <input type="text" id="answer3" placeholder="Traduction">
+        <button onclick="checkAnswers()">Valider</button>
+        <p id="result"></p>
+        <button onclick="newWord()">Nouvelle question</button>
+    </div>
+
+    <script>
+        const verbs = [
+            { inf: "go", pret: "went", part: "gone", trad: "aller" },
+            { inf: "see", pret: "saw", part: "seen", trad: "voir" },
+            { inf: "take", pret: "took", part: "taken", trad: "prendre" }
+        ];
+
+        let currentVerb;
+        let mode = "infinitif";
+
+        function newWord() {
+            currentVerb = verbs[Math.floor(Math.random() * verbs.length)];
+            mode = ["inf", "pret", "part", "trad"][Math.floor(Math.random() * 4)];
+            let questionText = mode === "inf" ? currentVerb.inf : 
+                              mode === "pret" ? currentVerb.pret : 
+                              mode === "part" ? currentVerb.part : 
+                              currentVerb.trad;
+            document.getElementById("question-label").textContent = `Mot donné : ${questionText}`;
+            document.getElementById("answer1").value = "";
+            document.getElementById("answer2").value = "";
+            document.getElementById("answer3").value = "";
+            document.getElementById("result").textContent = "";
+        }
+
+        function checkAnswers() {
+            let ans1 = document.getElementById("answer1").value.trim().toLowerCase();
+            let ans2 = document.getElementById("answer2").value.trim().toLowerCase();
+            let ans3 = document.getElementById("answer3").value.trim().toLowerCase();
+            let correct1 = mode !== "pret" ? currentVerb.pret : currentVerb.inf;
+            let correct2 = mode !== "part" ? currentVerb.part : currentVerb.inf;
+            let correct3 = mode !== "trad" ? currentVerb.trad : currentVerb.inf;
+            if (ans1 === correct1 && ans2 === correct2 && ans3 === correct3) {
+                document.getElementById("result").textContent = "Bravo ! Réponse correcte.";
+            } else {
+                document.getElementById("result").textContent = `Incorrect. Réponses : ${correct1}, ${correct2}, ${correct3}`;
+            }
+        }
+
+        newWord();
+    </script>
+</body>
+</html>
