@@ -206,21 +206,21 @@ function checkAnswers() {
 
     let allCorrect = true;
 
-    if (ans1 === correct1) {
+    if (Array.isArray(correct1) ? correct1.includes(ans1) : ans1 === correct1) {
         document.getElementById("answer1").classList.add("correct");
     } else {
         document.getElementById("answer1").classList.add("incorrect");
         allCorrect = false;
     }
-
-    if (ans2 === correct2) {
+    
+    if (Array.isArray(correct2) ? correct2.includes(ans2) : ans2 === correct2) {
         document.getElementById("answer2").classList.add("correct");
     } else {
         document.getElementById("answer2").classList.add("incorrect");
         allCorrect = false;
     }
-
-    if (ans3 === correct3) {
+    
+    if (Array.isArray(correct3) ? correct3.includes(ans3) : ans3 === correct3) {
         document.getElementById("answer3").classList.add("correct");
     } else {
         document.getElementById("answer3").classList.add("incorrect");
