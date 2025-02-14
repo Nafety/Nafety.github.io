@@ -285,10 +285,29 @@ function checkAnswers() {
 
     if (allCorrect) {
         document.getElementById("result").textContent = "Bravo ! Réponse correcte.";
-        score += 10; // Ajoutez 10 points pour une réponse correcte
+        score += 1; // Ajoutez 10 points pour une réponse correcte
         document.getElementById("score").textContent = `Score: ${score}`;
         setTimeout(newWord, 1000); // Lancer une nouvelle question après 1 seconde
+        document.getElementById("answer1").focus();
     } else {
         document.getElementById("result").textContent = `Incorrect. Réponses : ${correct1}, ${correct2}, ${correct3}`;
     }
 }
+document.getElementById("answer1").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Empêche le comportement par défaut (ex: saut de ligne dans un textarea)
+        checkAnswers(); // Fonction de validation de la réponse
+    }
+});
+document.getElementById("answer2").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Empêche le comportement par défaut (ex: saut de ligne dans un textarea)
+        checkAnswers(); // Fonction de validation de la réponse
+    }
+});
+document.getElementById("answer3").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // Empêche le comportement par défaut (ex: saut de ligne dans un textarea)
+        checkAnswers(); // Fonction de validation de la réponse
+    }
+});
