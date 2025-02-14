@@ -15,8 +15,8 @@
         </div>
         <div id="game-section" style="display: none;">
             <div class="mode-selector">
-                <button onclick="setMode(1)">Mode 1: Infinitif → Prétérit, Participe Passé, Traduction</button>
-                <button onclick="setMode(2)">Mode 2: Mot au hasard</button>
+                <button id="mode1" class="mode-button" onclick="setMode(1)">Infinitif</button>
+                <button id="mode2" class="mode-button" onclick="setMode(2)">Aléatoire</button>
             </div>
             <label id="question-label"></label>
             <div id="answer-fields">
@@ -27,10 +27,6 @@
             <button onclick="checkAnswers()">Valider</button>
             <p id="result"></p>
             <p id="score">Score: 0</p>
-            <div id="leaderboard">
-                <h2>Classement</h2>
-                <ul id="leaderboard-list"></ul>
-            </div>
         </div>
     </div>
     <script src="public/js/script.js"></script>

@@ -1,7 +1,20 @@
+:root {
+    --background-color: #444;
+    --text-color: #fff;
+    --primary-color: #fff; /* Blanc */
+    --secondary-color: #333; /* Blanc cassé */
+    --button-color: #333; /* Blanc pour les boutons */
+    --border-color: #fff; /* Blanc */
+    --correct-color: green;
+    --incorrect-color: red;
+    --hover-color: #fff; /* Blanc */
+}
+
 body {
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f4f4f9;
+    background-color: var(--background-color);
+    color: var(--text-color);
     margin: 0;
     padding: 0;
     display: flex;
@@ -11,41 +24,47 @@ body {
 }
 
 .container {
-    background-color: #fff;
+    background-color: var(--secondary-color);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
     max-width: 500px;
     width: 100%;
+    opacity: 0.95; /* Légère transparence pour un effet doux */
 }
 
 h1 {
-    color: #333;
+    color: var(--primary-color);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .mode-selector {
     margin-bottom: 20px;
 }
 
-.mode-selector button {
+.mode-button {
     margin: 5px;
     padding: 10px 20px;
-    border: none;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
-    background-color: #007bff;
-    color: white;
+    background-color: var(--button-color);
+    color: var(--primary-color);
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.mode-selector button:hover {
-    background-color: #0056b3;
+.mode-button:hover,
+.mode-button.active {
+    background-color: var(--primary-color);
+    color: var(--background-color);
 }
 
 #question-label {
     font-size: 1.5em;
     margin-bottom: 20px;
-    color: #555;
+    color: var(--primary-color);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 input {
@@ -53,47 +72,53 @@ input {
     margin: 10px auto;
     padding: 10px;
     width: calc(100% - 20px);
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
+    background-color: var(--secondary-color);
+    color: var(--text-color);
     font-size: 1em;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input::placeholder {
+    color: var(--text-color);
+    opacity: 0.7;
 }
 
 button {
     padding: 10px 20px;
-    border: none;
+    border: 1px solid var(--border-color);
     border-radius: 5px;
-    background-color: #28a745;
-    color: white;
+    background-color: var(--button-color);
+    color: var(--primary-color);
     cursor: pointer;
     transition: background-color 0.3s;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 button:hover {
-    background-color: #218838;
+    color: var(--background-color);
+    background-color: var(--hover-color);
 }
 
 #result {
     margin-top: 20px;
     font-size: 1.2em;
-    color: #555;
+    color: var(--primary-color);
 }
 
 #score {
     margin-top: 20px;
     font-size: 1.2em;
-    color: #555;
-}
-
-#leaderboard {
-    margin-top: 20px;
-    font-size: 1.2em;
-    color: #555;
+    color: var(--primary-color);
 }
 
 .correct {
-    border: 2px solid green;
+    border: 2px solid var(--correct-color);
+    background-color: rgba(0, 255, 0, 0.1); /* Fond vert clair */
 }
 
 .incorrect {
-    border: 2px solid red;
+    border: 2px solid var(--incorrect-color);
+    background-color: rgba(255, 0, 0, 0.1); /* Fond rouge clair */
 }
