@@ -293,30 +293,38 @@ function checkAnswers() {
         document.getElementById("result").textContent = `Incorrect. Réponses : ${correct1}, ${correct2}, ${correct3}`;
     }
 }
+
+function allFilled() {
+    return ((document.getElementById("answer1").value.trim()!="") && (document.getElementById("answer2").value.trim()!="") && ((document.getElementById("answer3").value.trim()!="")))
+}
 document.getElementById("answer1").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault(); // Empêche le comportement par défaut (ex: saut de ligne dans un textarea)
-        checkAnswers(); // Fonction de validation de la réponse
-        if (document.getElementById("answer1").classList.contains("correct")) {
+        if (document.getElementById("answer1").value.trim()!="") {
             document.getElementById("answer2").focus();
+            if (allFilled()) {
+                checkAnswers();
+            }
         }
     }
 });
 document.getElementById("answer2").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault(); // Empêche le comportement par défaut (ex: saut de ligne dans un textarea)
-        checkAnswers(); // Fonction de validation de la réponse
-        if (document.getElementById("answer2").classList.contains("correct")) {
+        if (document.getElementById("answer2").value.trim()!="") {
             document.getElementById("answer3").focus();
+            if (allFilled()) {
+                checkAnswers();
+            }
         }
     }
 });
+
 document.getElementById("answer3").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
-        event.preventDefault(); // Empêche le comportement par défaut (ex: saut de ligne dans un textarea)
-        checkAnswers(); // Fonction de validation de la réponse
-        if ((document.getElementById("answer3").classList.contains("correct")) && (document.getElementById("answer3").classList.contains("correct")) && (document.getElementById("answer3").classList.contains("correct"))) {
-            document.getElementById("answer1").focus();
+        event.preventDefault(); // Empêche le comportement par défaut (ex: saut de ligne dans un textarea)*
+        if (allFilled()) {
+            checkAnswers();
         }
     }
 });
