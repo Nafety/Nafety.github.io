@@ -9,22 +9,46 @@
 <body>
     <div class="container">
         <h1>Irregular verbs game</h1>
-        <div id="game-section" style="display: block;">
-            <div class="mode-selector">
-                <button id="mode1" class="mode-button" onclick="setMode(1)">Infinitif</button>
-                <button id="mode2" class="mode-button" onclick="setMode(2)">Aléatoire</button>
+        <div id="game-section">
+            <div id="jeu">
+                <button id="verbs" class="mode-button" onclick="displayVerbs()">Modifier verbes</button>
+                <div class="mode-selector">
+                    <button id="mode1" class="mode-button" onclick="setMode(1)">Infinitif</button>
+                    <button id="mode2" class="mode-button" onclick="setMode(2)">Aléatoire</button>
+                </div>
+                <label id="question-label"></label>
+                <div id="answer-fields">
+                    <input type="text" id="answer1" placeholder="Prétérit">
+                    <input type="text" id="answer2" placeholder="Participe passé">
+                    <input type="text" id="answer3" placeholder="Traduction">
+                </div>
+                <button onclick="checkAnswers()">Valider</button>
+                <p id="result"></p>
+                <p id="score">Score: 0</p>
             </div>
-            <label id="question-label"></label>
-            <div id="answer-fields">
-                <input type="text" id="answer1" placeholder="Prétérit">
-                <input type="text" id="answer2" placeholder="Participe passé">
-                <input type="text" id="answer3" placeholder="Traduction">
+            <div id="verb-list" class="hidden">
+                <button id="add-verbe" class="mode-button" onclick="displayAddVerb()">Ajouter un verbe </button>
+                <p id="result-verbe"></p>
+                <div id="add-verb-form" class="hidden">
+                    <h2>Ajouter un verbe</h2>
+                    <input type="text" id="verb-inf" placeholder="Infinitif">
+                    <input type="text" id="verb-pret" placeholder="Prétérit(s) (séparés par des ',')">
+                    <input type="text" id="verb-part" placeholder="Participe passé(s) (séparés par des ',')">
+                    <input type="text" id="verb-trad" placeholder="Traduction(s) (séparés par des ',')">
+                    <button onclick="unDisplayAddVerb()">Retour</button>
+                    <button onclick="addVerb()">Ajouter</button>
+                </div>
+                <div id="selection">
+                    <h2>Sélectionnez les verbes</h2>
+                    <div id="selection-verbes" class="scrollable-verb-list">
+                        <!-- Les verbes seront ajoutés dynamiquement en JavaScript -->
+                    </div>
+                    <button onclick="startGameWithSelectedVerbs()">Commencer le jeu</button>
+                </div>
             </div>
-            <button onclick="checkAnswers()">Valider</button>
-            <p id="result"></p>
-            <p id="score">Score: 0</p>
         </div>
+        
     </div>
-    <script src="public/js/script.js"></script>
+    <script src="public/js/scriptv2.js"></script>
 </body>
 </html>
