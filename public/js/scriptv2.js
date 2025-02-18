@@ -1,9 +1,11 @@
+// Intialisation des variables globales
 let score = 0;
 let selectedVerbs = []; // Liste des verbes sélectionnés
 let currentVerb = {}; // Verbe actuel pour le jeu
 let mode = 1; // Mode par défaut (Infinitif)
 let verbsData = []; // Stocker les verbes chargés depuis le fichier JSON
 let gameMode = "inf";
+
 // Charger les verbes depuis le fichier JSON
 async function loadVerbs() {
     try {
@@ -19,71 +21,11 @@ async function loadVerbs() {
             localStorage.setItem('verbes', JSON.stringify(verbsData));
 
         }
-
         // Afficher les verbes
         displayVerbAccordion(verbsData);
         startGameWithSelectedVerbs();
     } catch (error) {
         console.error('Erreur lors du chargement des verbes :', error);
-    }
-}
-// Afficher ou masquer la liste des verbes
-function displayVerbs() {
-    document.getElementById('verb-list').classList.remove('hidden');
-    document.getElementById('jeu').classList.add('hidden');
-}
-
-// Afficher les verbes sous forme d'accordéon avec des cases à cocher
-function displayVerbAccordion(verbs) {
-    const accordionContainer = document.getElementById('selection-verbes');
-    accordionContainer.innerHTML = ''; // Vider le conteneur
-
-    verbs.forEach(verb => {
-        const verbItem = document.createElement('div');
-        verbItem.className = 'verb-item';
-
-        const verbHeader = document.createElement('div');
-        verbHeader.className = 'verb-header';
-        verbHeader.innerHTML = `
-            <span class="delete-icon" onclick="deleteVerb('${verb.inf}')">🗑️</span> <!-- Icône de poubelle -->
-            <input type="checkbox" checked="true" id="${verb.inf}" value="${verb.inf}">
-            <label for="${verb.inf}">${verb.inf}</label>
-            <span class="toggle-icon">▼</span>
-        `;
-
-        // Gestion du clic sur l'en-tête pour dérouler les détails
-        verbHeader.addEventListener('click', (event) => {
-            // Empêcher la propagation du clic si l'utilisateur clique sur la case à cocher
-            if (event.target.tagName !== 'INPUT') {
-                toggleVerbDetails(verbItem);
-            }
-        });
-
-        const verbDetails = document.createElement('div');
-        verbDetails.className = 'verb-details';
-        verbDetails.innerHTML = `
-            <strong>Prétérit :</strong> ${verb.pret.join(', ')}<br>
-            <strong>Participe passé :</strong> ${verb.part.join(', ')}<br>
-            <strong>Traduction :</strong> ${verb.trad.join(', ')}
-        `;
-        verbDetails.style.display = 'none'; // Masquer les détails par défaut
-
-        verbItem.appendChild(verbHeader);
-        verbItem.appendChild(verbDetails);
-        accordionContainer.appendChild(verbItem);
-    });
-}
-
-// Afficher ou masquer les détails d'un verbe
-function toggleVerbDetails(verbItem) {
-    const verbDetails = verbItem.querySelector('.verb-details');
-    const toggleIcon = verbItem.querySelector('.toggle-icon');
-    if (verbDetails.style.display === 'none') {
-        verbDetails.style.display = 'block'; // Afficher les détails
-        toggleIcon.textContent = '▲'; // Changer l'icône
-    } else {
-        verbDetails.style.display = 'none'; // Masquer les détails
-        toggleIcon.textContent = '▼'; // Changer l'icône
     }
 }
 
@@ -105,6 +47,7 @@ function startGameWithSelectedVerbs() {
     newWord();
 }
 
+// Changer le mode de jeu
 function setMode(newMode) {
     mode = newMode;
     document.getElementById('mode1').classList.toggle('active', mode === 1);
@@ -112,6 +55,7 @@ function setMode(newMode) {
     newWord();
 }
 
+// Vérifier les différents champs
 function checkAnswers() {
     // Réinitialiser les classes CSS pour les champs de réponse
     document.getElementById("answer1").classList.remove("correct", "incorrect");
@@ -167,13 +111,7 @@ function checkAnswers() {
     }
 }
 
-// Vider les champs de réponse
-function clearInputFields() {
-    document.getElementById('answer1').value = '';
-    document.getElementById('answer2').value = '';
-    document.getElementById('answer3').value = '';
-}
-
+// Changer de mot étudié au hasard selon le mode de jeu sélectionné
 function newWord() {
     const checkboxes = document.querySelectorAll('#selection-verbes input[type="checkbox"]:checked');
     selectedVerbs = Array.from(checkboxes).map(checkbox => {
@@ -211,27 +149,7 @@ function allFilled() {
     return ((document.getElementById("answer1").value.trim()!="") && (document.getElementById("answer2").value.trim()!="") && ((document.getElementById("answer3").value.trim()!="")))
 }
 
-function displayAddVerb() {
-    document.getElementById('add-verb-form').classList.remove('hidden');
-    document.getElementById('selection').classList.add('hidden');
-    document.getElementById('add-verbe').classList.add('hidden');
-    document.getElementById("result-verbe").textContent = "";
-    document.getElementById('verb-inf').value = '';
-    document.getElementById('verb-pret').value = '';
-    document.getElementById('verb-part').value = '';
-    document.getElementById('verb-trad').value = '';
-}
-function unDisplayAddVerb() {
-    document.getElementById('add-verb-form').classList.add('hidden');
-    document.getElementById('selection').classList.remove('hidden');
-    document.getElementById('add-verbe').classList.remove('hidden');
-    document.getElementById("result-verbe").textContent = "";
-    document.getElementById('verb-inf').value = '';
-    document.getElementById('verb-pret').value = '';
-    document.getElementById('verb-part').value = '';
-    document.getElementById('verb-trad').value = '';
-}
-
+// Ajouter un verbe
 function addVerb() {
     const inf = document.getElementById('verb-inf').value.trim();
     const pret = document.getElementById('verb-pret').value.trim().split(',');
@@ -273,6 +191,7 @@ function addVerb() {
     document.getElementById('verb-trad').value = '';
 }
 
+// Supprimer un verbe
 function deleteVerb(inf) {
     let verbs = JSON.parse(localStorage.getItem('verbes'));
     const initialLength = verbs.length;
@@ -292,6 +211,25 @@ function deleteVerb(inf) {
     }
 }
 
+// Réinitialiser les verbes
+async function reinitializeVerbs() {
+    // Supprimer les verbes actuels de localStorage
+    localStorage.removeItem('verbes');
+    // Charger les verbes depuis le fichier JSON
+    const response = await fetch('public/verbes.json');
+    const verbs = await response.json();
+
+    // Stocker les verbes dans localStorage
+    localStorage.setItem('verbes', JSON.stringify(verbs));
+
+    // Mettre à jour la variable globale verbsData
+    verbsData = verbs;
+
+    // Afficher les verbes
+    displayVerbAccordion(verbsData);
+}
+
+// Listeners sur les champs écrits pour les raccourcis claviers
 document.getElementById("answer1").addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
         event.preventDefault(); // Empêche le comportement par défaut (ex: saut de ligne dans un textarea)
@@ -323,6 +261,96 @@ document.getElementById("answer3").addEventListener("keypress", function(event) 
         }
     }
 });
+// Afficher ou masquer la liste des verbes
+function displayVerbs() {
+    document.getElementById('verb-list').classList.remove('hidden');
+    document.getElementById('jeu').classList.add('hidden');
+    document.getElementById('reinit-verbe').classList.remove('hidden');
+}
+
+// Afficher les verbes sous forme d'accordéon avec des cases à cocher
+function displayVerbAccordion(verbs) {
+    const accordionContainer = document.getElementById('selection-verbes');
+    accordionContainer.innerHTML = ''; // Vider le conteneur
+
+    verbs.forEach(verb => {
+        const verbItem = document.createElement('div');
+        verbItem.className = 'verb-item';
+
+        const verbHeader = document.createElement('div');
+        verbHeader.className = 'verb-header';
+        verbHeader.innerHTML = `
+            <span class="delete-icon" onclick="deleteVerb('${verb.inf}')">🗑️</span> <!-- Icône de poubelle -->
+            <input type="checkbox" checked="true" id="${verb.inf}" value="${verb.inf}">
+            <label for="${verb.inf}">${verb.inf}</label>
+            <span class="toggle-icon">▼</span>
+        `;
+
+        // Gestion du clic sur l'en-tête pour dérouler les détails
+        verbHeader.addEventListener('click', (event) => {
+            // Empêcher la propagation du clic si l'utilisateur clique sur la case à cocher
+            if (event.target.tagName !== 'INPUT') {
+                toggleVerbDetails(verbItem);
+            }
+        });
+
+        const verbDetails = document.createElement('div');
+        verbDetails.className = 'verb-details';
+        verbDetails.innerHTML = `
+            <strong>Prétérit :</strong> ${verb.pret.join(', ')}<br>
+            <strong>Participe passé :</strong> ${verb.part.join(', ')}<br>
+            <strong>Traduction :</strong> ${verb.trad.join(', ')}
+        `;
+        verbDetails.style.display = 'none'; // Masquer les détails par défaut
+
+        verbItem.appendChild(verbHeader);
+        verbItem.appendChild(verbDetails);
+        accordionContainer.appendChild(verbItem);
+    });
+}
+
+// Afficher ou masquer les détails d'un verbe
+function toggleVerbDetails(verbItem) {
+    const verbDetails = verbItem.querySelector('.verb-details');
+    const toggleIcon = verbItem.querySelector('.toggle-icon');
+    if (verbDetails.style.display === 'none') {
+        verbDetails.style.display = 'block'; // Afficher les détails
+        toggleIcon.textContent = '▲'; // Changer l'icône
+    } else {
+        verbDetails.style.display = 'none'; // Masquer les détails
+        toggleIcon.textContent = '▼'; // Changer l'icône
+    }
+}
+// Vider les champs de réponse
+function clearInputFields() {
+    document.getElementById('answer1').value = '';
+    document.getElementById('answer2').value = '';
+    document.getElementById('answer3').value = '';
+}
+
+// Affichage des différentes pages
+function displayAddVerb() {
+    document.getElementById('add-verb-form').classList.remove('hidden');
+    document.getElementById('selection').classList.add('hidden');
+    document.getElementById('add-verbe').classList.add('hidden');
+    document.getElementById('reinit-verbe').classList.add('hidden');
+    document.getElementById("result-verbe").textContent = "";
+    document.getElementById('verb-inf').value = '';
+    document.getElementById('verb-pret').value = '';
+    document.getElementById('verb-part').value = '';
+    document.getElementById('verb-trad').value = '';
+}
+function unDisplayAddVerb() {
+    document.getElementById('add-verb-form').classList.add('hidden');
+    document.getElementById('selection').classList.remove('hidden');
+    document.getElementById('add-verbe').classList.remove('hidden');
+    document.getElementById('reinit-verbe').classList.remove('hidden');
+    document.getElementById("result-verbe").textContent = "";
+    document.getElementById('verb-inf').value = '';
+    document.getElementById('verb-pret').value = '';
+    document.getElementById('verb-part').value = '';
+    document.getElementById('verb-trad').value = '';
+}
 
 // Initialisation
 loadVerbs();
