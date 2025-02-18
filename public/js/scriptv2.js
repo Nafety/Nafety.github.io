@@ -175,6 +175,10 @@ function clearInputFields() {
 }
 
 function newWord() {
+    const checkboxes = document.querySelectorAll('#selection-verbes input[type="checkbox"]:checked');
+    selectedVerbs = Array.from(checkboxes).map(checkbox => {
+        return verbsData.find(verb => verb.inf === checkbox.value);
+    });
     currentVerb = selectedVerbs[Math.floor(Math.random() * selectedVerbs.length)];
     if (mode === 1) {
         gameMode = "inf";
@@ -212,12 +216,20 @@ function displayAddVerb() {
     document.getElementById('selection').classList.add('hidden');
     document.getElementById('add-verbe').classList.add('hidden');
     document.getElementById("result-verbe").textContent = "";
+    document.getElementById('verb-inf').value = '';
+    document.getElementById('verb-pret').value = '';
+    document.getElementById('verb-part').value = '';
+    document.getElementById('verb-trad').value = '';
 }
 function unDisplayAddVerb() {
     document.getElementById('add-verb-form').classList.add('hidden');
     document.getElementById('selection').classList.remove('hidden');
     document.getElementById('add-verbe').classList.remove('hidden');
     document.getElementById("result-verbe").textContent = "";
+    document.getElementById('verb-inf').value = '';
+    document.getElementById('verb-pret').value = '';
+    document.getElementById('verb-part').value = '';
+    document.getElementById('verb-trad').value = '';
 }
 
 function addVerb() {
@@ -262,13 +274,14 @@ function addVerb() {
 }
 
 function deleteVerb(inf) {
-    let verbs = JSON.parse(localStorage.getItem('verbes')) || [];
+    let verbs = JSON.parse(localStorage.getItem('verbes'));
     const initialLength = verbs.length;
     if (initialLength>1) {
         verbs = verbs.filter(verb => verb.inf !== inf);
         if (verbs.length < initialLength) {
             localStorage.setItem('verbes', JSON.stringify(verbs));
         }
+        verbsData = verbs;
         // Supprimer le verbe de l'affichage
         const verbItem = document.querySelector(`#${inf}`).closest('.verb-item');
         if (verbItem) {
