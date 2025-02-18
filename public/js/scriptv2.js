@@ -262,9 +262,9 @@ function addVerb() {
 }
 
 function deleteVerb(inf) {
-    if (verbsData.length>1) {
-        let verbs = JSON.parse(localStorage.getItem('verbes')) || [];
-        const initialLength = verbs.length;
+    let verbs = JSON.parse(localStorage.getItem('verbes')) || [];
+    const initialLength = verbs.length;
+    if (initialLength>1) {
         verbs = verbs.filter(verb => verb.inf !== inf);
         if (verbs.length < initialLength) {
             localStorage.setItem('verbes', JSON.stringify(verbs));
