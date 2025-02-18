@@ -9,18 +9,23 @@ async function loadVerbs() {
     try {
         // Vérifier si les verbes sont déjà dans localStorage
         const storedVerbs = localStorage.getItem('verbes');
+        console.log(storedVerbs)
         if (storedVerbs) {
             verbsData = JSON.parse(storedVerbs); // Charger depuis localStorage
+            console.log(verbsData)
         } else {
             // Charger depuis le fichier JSON
             const response = await fetch('public/verbes.json');
             verbsData = await response.json();
+            console.log(verbsData)
             // Stocker dans localStorage
             localStorage.setItem('verbes', JSON.stringify(verbsData));
+
         }
 
         // Afficher les verbes
         displayVerbAccordion(verbsData);
+        startGameWithSelectedVerbs();
     } catch (error) {
         console.error('Erreur lors du chargement des verbes :', error);
     }
@@ -311,4 +316,3 @@ document.getElementById("answer3").addEventListener("keypress", function(event) 
 
 // Initialisation
 loadVerbs();
-startGameWithSelectedVerbs();
