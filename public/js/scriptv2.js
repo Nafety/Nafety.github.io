@@ -213,6 +213,10 @@ function deleteVerb(inf) {
 
 // Réinitialiser les verbes
 async function reinitializeVerbs() {
+    // Demander confirmation à l'utilisateur
+    if (!window.confirm("Êtes-vous sûr de vouloir réinitialiser les verbes ?")) {
+        return; // Annuler si l'utilisateur choisit "Annuler"
+    }
     // Supprimer les verbes actuels de localStorage
     localStorage.removeItem('verbes');
     // Charger les verbes depuis le fichier JSON
